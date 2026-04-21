@@ -1,16 +1,13 @@
 package com.gestaodigital.rh.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Getter @Setter
 @Entity
-@Getter
-@Setter
 public class Usuario {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
 
     private String email;
