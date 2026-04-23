@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import com.gestaodigital.rh.entity.Usuario;
-import com.gestaodigital.rh.repository.UsuarioRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.gestaodigital.rh.service.UsuarioService;
 
 import java.util.List;
 
@@ -14,17 +13,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsuarioController {
 
-    private final UsuarioRepository repo;
-    private final PasswordEncoder encoder;
+    private final UsuarioService service;
 
     @PostMapping
     public Usuario criar(@RequestBody Usuario u){
-        u.setSenha(encoder.encode(u.getSenha()));
-        return repo.save(u);
+        return service.criar(u);
     }
 
     @GetMapping
     public List<Usuario> listar(){
-        return repo.findAll();
+        return service.listar();
+    }
+
+    @GetMapping("/{id}")
+    public Usuario buscar(@PathVariable Long id){
+        return service.buscar(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletar(@PathVariable Long id){
+        service.deletar(id);
     }
 }
