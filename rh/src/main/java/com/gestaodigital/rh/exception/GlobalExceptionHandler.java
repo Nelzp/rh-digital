@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public String erro(Exception e){
-        return e.getMessage();
+    public String handle(Exception e){
+        return "Erro: " + e.getMessage();
     }
 }

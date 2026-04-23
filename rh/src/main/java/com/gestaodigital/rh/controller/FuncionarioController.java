@@ -17,11 +17,21 @@ public class FuncionarioController {
 
     @PostMapping
     public Funcionario criar(@RequestBody Funcionario f){
-        return service.salvar(f);
+        return service.criar(f);
     }
 
     @GetMapping
     public List<Funcionario> listar(){
         return service.listar();
+    }
+
+    @GetMapping("/{id}")
+    public Funcionario buscar(@PathVariable Long id){
+        return service.buscar(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletar(@PathVariable Long id){
+        service.deletar(id);
     }
 }
