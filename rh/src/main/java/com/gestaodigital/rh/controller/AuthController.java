@@ -1,11 +1,11 @@
 package com.gestaodigital.rh.controller;
 
+import com.gestaodigital.rh.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.*;
 import org.springframework.web.bind.annotation.*;
 
 import com.gestaodigital.rh.dto.LoginRequest;
-import com.gestaodigital.rh.security.JwtUtil;
 
 @RestController
 @RequestMapping("/auth")
@@ -13,7 +13,7 @@ import com.gestaodigital.rh.security.JwtUtil;
 public class AuthController {
 
     private final AuthenticationManager authManager;
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest request) {
@@ -25,6 +25,6 @@ public class AuthController {
                 )
         );
 
-        return jwtUtil.generateToken(request.email());
+        return jwtService.generateToken(request.email());
     }
 }

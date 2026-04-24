@@ -2,6 +2,7 @@ package com.gestaodigital.rh.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -10,7 +11,7 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private final String SECRET = "minha-chave-secreta-super-segura-123456";
+    private final String SECRET = "minha-chave-secreta-super-segura-12345678901234567890";
     private final long EXPIRATION = 1000 * 60 * 60;
 
     private Key getKey() {
@@ -26,24 +27,26 @@ public class JwtService {
                 .compact();
     }
 
+    public boolean isTokenValid(String token, UserDetails user) {
+        final String username = extractUsername(token);
+        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+    }
+
+    public boolean isTokenExpired(String token) {
+        return extractAllClaims(token)
+                .getExpiration()
+                .before(new Date());
+    }
+
     public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
                 .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-    }
-
-    public boolean isTokenValid(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(getKey())
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+                .getBody();
     }
 }

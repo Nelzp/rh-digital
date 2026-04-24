@@ -16,22 +16,10 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UsuarioService implements UserDetailsService {
+public class UsuarioService {
 
     private final UsuarioRepository repo;
     private final PasswordEncoder encoder;
-
-    @Override
-    public UserDetails loadUserByUsername(String email) {
-        Usuario u = repo.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        return User.builder()
-                .username(u.getEmail())
-                .password(u.getSenha())
-                .roles(u.getRole().name())
-                .build();
-    }
 
     public UsuarioResponse criar(UsuarioRequest dto){
 
