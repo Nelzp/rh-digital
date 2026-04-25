@@ -1,6 +1,7 @@
 package com.gestaodigital.rh.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.gestaodigital.rh.entity.Funcionario;
@@ -31,6 +32,7 @@ public class FuncionarioController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deletar(@PathVariable Long id){
         service.deletar(id);
     }

@@ -1,4 +1,4 @@
-package com.gestaodigital.rh.entity;
+package com.gestaodigital.rh.enums;
 
 public enum StatusFerias {
     PENDENTE, APROVADO

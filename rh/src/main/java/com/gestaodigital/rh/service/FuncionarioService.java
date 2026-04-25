@@ -1,10 +1,9 @@
 package com.gestaodigital.rh.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import com.gestaodigital.rh.entity.Funcionario;
 import com.gestaodigital.rh.repository.FuncionarioRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -12,21 +11,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FuncionarioService {
 
-    private final FuncionarioRepository repo;
+    private final FuncionarioRepository repository;
 
     public Funcionario criar(Funcionario f){
-        return repo.save(f);
+        f.setSalarioBase(f.getCargo().getSalarioBase());
+        return repository.save(f);
     }
 
     public List<Funcionario> listar(){
-        return repo.findAll();
+        return repository.findAll();
     }
 
     public Funcionario buscar(Long id){
-        return repo.findById(id).orElseThrow();
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
     }
 
     public void deletar(Long id){
-        repo.deleteById(id);
+        repository.deleteById(id);
     }
 }
