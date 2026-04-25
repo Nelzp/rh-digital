@@ -1,10 +1,5 @@
 "use client";
 
-import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,6 +21,11 @@ import {
   type SignInSchema,
   signInSchema,
 } from "@/types/schemas/sign-in-schema";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function SignIn() {
   const router = useRouter();
@@ -42,7 +42,7 @@ export default function SignIn() {
       onSuccess() {
         toast.success("Login bem-sucedido!");
         form.reset();
-        router.push("/dashboard");
+        router.push("/");
       },
       onError({ error }) {
         toast.error(

@@ -10,7 +10,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* FERIAS */}
           <Link
-            href="/dashboard/ferias"
+            href="/ferias"
             className="relative block overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-500 hover:-translate-y-2 hover:shadow-xl h-[300px]"
           >
             <Image
@@ -31,7 +31,7 @@ export default function Dashboard() {
 
           {/* PAGAMENTO */}
           <Link
-            href="/dashboard/pagamento"
+            href="/pagamento"
             className="relative block overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-500 hover:-translate-y-2 hover:shadow-xl"
           >
             <Image
@@ -52,7 +52,7 @@ export default function Dashboard() {
 
           {/* PONTO */}
           <Link
-            href="/dashboard/ponto"
+            href="/ponto"
             className="relative block overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-500 hover:-translate-y-2 hover:shadow-xl"
           >
             <Image

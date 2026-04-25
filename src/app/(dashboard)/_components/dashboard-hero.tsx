@@ -1,10 +1,10 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
 
 interface IDashboardHero {
   title: string;
@@ -31,10 +31,7 @@ export function DashboardHero({
       </div>
 
       <div className="flex flex-col items-start gap-3 md:items-end">
-        <Link
-          href="/dashboard"
-          className={buttonVariants({ variant: "destructive" })}
-        >
+        <Link href="/" className={buttonVariants({ variant: "destructive" })}>
           <HugeiconsIcon icon={ArrowLeft01Icon} className="size-4" />
           Voltar
         </Link>

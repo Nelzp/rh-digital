@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { authClient } from "./lib/auth-client";
 
 const PUBLIC_ROUTES = ["/auth/sign-in", "/auth/sign-up"];
-const PUBLIC_AND_PRIVATE_ROUTES = ["/"];
+const PUBLIC_AND_PRIVATE_ROUTES = [""];
 
 export async function proxy(request: NextRequest) {
   // 1. Pega a sessão
@@ -35,7 +35,7 @@ export async function proxy(request: NextRequest) {
   // 3. Se estiver logado e tentar acessar login/register
   if (isAuthenticated && isPublicRoute) {
     const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
+    url.pathname = "/";
 
     return NextResponse.redirect(url);
   }

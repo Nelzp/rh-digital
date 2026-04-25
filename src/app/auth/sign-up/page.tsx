@@ -1,10 +1,5 @@
 "use client";
 
-import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,6 +21,11 @@ import {
   type SignUpSchema,
   signUpSchema,
 } from "@/types/schemas/sign-up-schema";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function SignUp() {
   const router = useRouter();
@@ -46,7 +46,7 @@ export default function SignUp() {
           "Conta criada com sucesso! Verifique seu email para ativar a conta.",
         );
         form.reset();
-        router.push("/dashboard");
+        router.push("/");
       },
       onError({ error }) {
         toast.error(

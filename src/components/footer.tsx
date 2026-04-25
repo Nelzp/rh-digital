@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -30,19 +30,19 @@ export function Footer() {
               <h3 className="font-medium text-white">Acesso rapido</h3>
               <div className="space-y-2 text-slate-400 flex flex-col">
                 <Link
-                  href="/dashboard/ferias"
+                  href="/ferias"
                   className="hover:text-slate-200 transition-colors"
                 >
                   Solicitacoes de ferias
                 </Link>
                 <Link
-                  href="/dashboard/folha-pagamento"
+                  href="/folha-pagamento"
                   className="hover:text-slate-200 transition-colors"
                 >
                   Folha de pagamento
                 </Link>
                 <Link
-                  href="/dashboard/controle-ponto"
+                  href="/controle-ponto"
                   className="hover:text-slate-200 transition-colors"
                 >
                   Controle de ponto
