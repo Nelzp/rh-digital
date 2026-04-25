@@ -28,17 +28,13 @@ gerenciamento de recursos humanos.
 -   Apenas **ADMIN** pode deletar funcionários
 -   Apenas **RH** pode aprovar férias
 -   Funcionário bate ponto seguindo ordem:
-    -   ENTRADA → INICIO_ALMOCO → FIM_ALMOCO → SAIDA
+-   ENTRADA → INICIO_ALMOCO → FIM_ALMOCO → SAIDA
 -   Salário definido automaticamente pelo cargo
 
-## 📂 Estrutura
+## 📂 Estrutura do Projeto
 
-    controller/
-    service/
-    repository/
-    entity/
-    dto/
-    security/
+    backend  → API Spring Boot  
+    frontend → Interface web
 
 ## ▶️ Como rodar
 
