@@ -1,86 +1,94 @@
 package com.gestaodigital.rh.service;
 
-import com.gestaodigital.rh.dto.UsuarioRequest;
+import com.gestaodigital.rh.dto.UsuarioRequestDTO;
 import com.gestaodigital.rh.dto.UsuarioResponse;
-import com.gestaodigital.rh.entity.Role;
+import com.gestaodigital.rh.entity.Funcionario;
+import com.gestaodigital.rh.entity.Usuario;
+import com.gestaodigital.rh.repository.FuncionarioRepository;
+import com.gestaodigital.rh.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.gestaodigital.rh.entity.Usuario;
-import com.gestaodigital.rh.repository.UsuarioRepository;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
 
-    private final UsuarioRepository repo;
-    private final PasswordEncoder encoder;
+    private final UsuarioRepository usuarioRepository;
+    private final FuncionarioRepository funcionarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioResponse criar(UsuarioRequest dto){
+    public UsuarioResponse criar(UsuarioRequestDTO dto) {
 
-        Usuario u = new Usuario();
-        u.setEmail(dto.getEmail());
-        u.setSenha(encoder.encode(dto.getSenha()));
-        u.setRole(Role.valueOf(dto.getRole()));
+        Usuario usuario = new Usuario();
+        usuario.setEmail(dto.getEmail());
+        usuario.setSenha(passwordEncoder.encode(dto.getSenha()));
+        usuario.setRole(dto.getRole());
 
-        Usuario salvo = repo.save(u);
+        usuario = usuarioRepository.save(usuario);
+
+        if (dto.getCargo() != null) {
+
+            Funcionario funcionario = new Funcionario();
+            funcionario.setUsuario(usuario);
+            funcionario.setCargo(dto.getCargo()); // ENUM
+            funcionario.setSalarioBase(dto.getCargo().getSalarioBase());
+
+            funcionarioRepository.save(funcionario);
+        }
 
         return new UsuarioResponse(
-                salvo.getId(),
-                salvo.getEmail(),
-                salvo.getRole().name()
+                usuario.getId(),
+                usuario.getEmail(),
+                usuario.getRole().name()
         );
     }
 
     public List<UsuarioResponse> listar() {
-        return repo.findAll()
+        return usuarioRepository.findAll()
                 .stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+                .map(u -> new UsuarioResponse(
+                        u.getId(),
+                        u.getEmail(),
+                        u.getRole().name()))
+                .toList();
     }
 
-    public UsuarioResponse buscar(Long id){
-        Usuario u = repo.findById(id)
+    public UsuarioResponse buscar(Long id) {
+        Usuario u = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        return toResponse(u);
-    }
-
-    public UsuarioResponse atualizar(Long id, UsuarioRequest dto){
-
-        Usuario u = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        u.setEmail(dto.getEmail());
-
-        if(dto.getSenha() != null && !dto.getSenha().isBlank()){
-            u.setSenha(encoder.encode(dto.getSenha()));
-        }
-
-        u.setRole(Role.valueOf(dto.getRole()));
-
-        Usuario atualizado = repo.save(u);
-
-        return toResponse(atualizado);
-    }
-
-    public void deletar(Long id){
-        if(!repo.existsById(id)){
-            throw new RuntimeException("Usuário não encontrado");
-        }
-        repo.deleteById(id);
-    }
-
-    private UsuarioResponse toResponse(Usuario u){
         return new UsuarioResponse(
                 u.getId(),
                 u.getEmail(),
                 u.getRole().name()
         );
+    }
+
+    public UsuarioResponse atualizar(Long id, UsuarioRequestDTO dto) {
+
+        Usuario u = usuarioRepository.findById(id)
+                .orElseThrow();
+
+        u.setEmail(dto.getEmail());
+        u.setRole(dto.getRole());
+
+        if (dto.getSenha() != null && !dto.getSenha().isBlank()) {
+            u.setSenha(passwordEncoder.encode(dto.getSenha()));
+        }
+
+        usuarioRepository.save(u);
+
+        return new UsuarioResponse(
+                u.getId(),
+                u.getEmail(),
+                u.getRole().name()
+        );
+    }
+
+    public void deletar(Long id) {
+        usuarioRepository.deleteById(id);
     }
 }

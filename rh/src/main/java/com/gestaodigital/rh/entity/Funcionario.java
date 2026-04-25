@@ -1,19 +1,28 @@
 package com.gestaodigital.rh.entity;
 
+import com.gestaodigital.rh.enums.Cargo;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter @Setter
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Funcionario {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String nome;
-    private String cargo;
+
+    @Enumerated(EnumType.STRING)
+    private Cargo cargo;
+
     private Double salarioBase;
 
     @OneToOne
+    @JoinColumn(name = "usuario_id", unique = true)
     private Usuario usuario;
 }

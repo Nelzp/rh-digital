@@ -1,5 +1,6 @@
 package com.gestaodigital.rh.entity;
 
+import com.gestaodigital.rh.enums.StatusFerias;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;

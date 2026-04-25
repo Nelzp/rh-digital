@@ -1,5 +1,6 @@
 package com.gestaodigital.rh.entity;
 
+import com.gestaodigital.rh.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

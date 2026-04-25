@@ -1,13 +1,11 @@
 package com.gestaodigital.rh.controller;
 
-import com.gestaodigital.rh.dto.UsuarioRequest;
+import com.gestaodigital.rh.dto.UsuarioRequestDTO;
 import com.gestaodigital.rh.dto.UsuarioResponse;
+import com.gestaodigital.rh.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import com.gestaodigital.rh.entity.Usuario;
-import com.gestaodigital.rh.service.UsuarioService;
 
 import java.util.List;
 
@@ -19,28 +17,28 @@ public class UsuarioController {
     private final UsuarioService service;
 
     @PostMapping
-    public UsuarioResponse criar(@RequestBody @Valid UsuarioRequest dto){
+    public UsuarioResponse criar(@RequestBody @Valid UsuarioRequestDTO dto) {
         return service.criar(dto);
     }
 
     @GetMapping
-    public List<UsuarioResponse> listar(){
+    public List<UsuarioResponse> listar() {
         return service.listar();
     }
 
     @GetMapping("/{id}")
-    public UsuarioResponse buscar(@PathVariable Long id){
+    public UsuarioResponse buscar(@PathVariable Long id) {
         return service.buscar(id);
     }
 
     @PutMapping("/{id}")
     public UsuarioResponse atualizar(@PathVariable Long id,
-                                     @RequestBody @Valid UsuarioRequest dto){
+                                     @RequestBody UsuarioRequestDTO dto) {
         return service.atualizar(id, dto);
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id){
+    public void deletar(@PathVariable Long id) {
         service.deletar(id);
     }
 }

@@ -1,12 +1,11 @@
 package com.gestaodigital.rh.controller;
 
+import com.gestaodigital.rh.entity.FolhaPagamento;
+import com.gestaodigital.rh.entity.Funcionario;
+import com.gestaodigital.rh.service.FolhaService;
+import com.gestaodigital.rh.service.FuncionarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import com.gestaodigital.rh.entity.FolhaPagamento;
-import com.gestaodigital.rh.service.FolhaService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/folha")
@@ -14,14 +13,13 @@ import java.util.List;
 public class FolhaController {
 
     private final FolhaService service;
+    private final FuncionarioService funcionarioService;
 
-    @PostMapping
-    public FolhaPagamento calcular(@RequestBody FolhaPagamento f){
-        return service.calcular(f);
-    }
+    @PostMapping("/{funcionarioId}")
+    public FolhaPagamento gerar(@PathVariable Long funcionarioId) {
 
-    @GetMapping
-    public List<FolhaPagamento> listar(){
-        return service.listar();
+        Funcionario funcionario = funcionarioService.buscar(funcionarioId);
+
+        return service.gerar(funcionario);
     }
 }

@@ -1,10 +1,10 @@
 package com.gestaodigital.rh.controller;
 
+import com.gestaodigital.rh.dto.PontoRequestDTO;
+import com.gestaodigital.rh.dto.PontoResponseDTO;
+import com.gestaodigital.rh.service.PontoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import com.gestaodigital.rh.entity.Ponto;
-import com.gestaodigital.rh.service.PontoService;
 
 import java.util.List;
 
@@ -16,12 +16,12 @@ public class PontoController {
     private final PontoService service;
 
     @PostMapping
-    public Ponto bater(@RequestBody Ponto ponto){
-        return service.bater(ponto);
+    public PontoResponseDTO bater(@RequestBody PontoRequestDTO dto){
+        return service.bater(dto);
     }
 
     @GetMapping
-    public List<Ponto> listar(){
+    public List<PontoResponseDTO> listar(){
         return service.listar();
     }
 }
