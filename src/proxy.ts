@@ -1,18 +1,42 @@
-import { headers } from "next/headers";
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-import { authClient } from "./lib/auth-client";
+import { type NextRequest, NextResponse } from "next/server";
+import { findUserByEmail } from "@/http/find-user-by-email";
 
 const PUBLIC_ROUTES = ["/auth/sign-in", "/auth/sign-up"];
 const PUBLIC_AND_PRIVATE_ROUTES = [""];
 
+type TokenPayload = {
+  exp?: number;
+  sub?: string;
+};
+
+function decodeTokenPayload(token: string) {
+  const payload = token.split(".")[1];
+
+  if (!payload) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(
+      atob(payload.replace(/-/g, "+").replace(/_/g, "/")),
+    ) as TokenPayload;
+  } catch {
+    return null;
+  }
+}
+
 export async function proxy(request: NextRequest) {
   // 1. Pega a sessão
-  const session = await authClient.getSession({
-    fetchOptions: {
-      headers: await headers(),
-    },
-  });
+  const token = request.cookies.get("token")?.value;
+  const payload = token ? decodeTokenPayload(token) : null;
+  const isExpired = payload?.exp ? payload.exp * 1000 < Date.now() : false;
+  const user =
+    token && payload?.sub && !isExpired
+      ? await findUserByEmail(payload.sub, token)
+      : null;
+  const session = {
+    data: user,
+  };
 
   const isAuthenticated = !!session.data;
 

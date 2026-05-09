@@ -1,13 +1,24 @@
 "use client";
 
-import { UserIcon } from "@hugeicons/core-free-icons";
+import { Logout02Icon, UserIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { deleteCookie } from "cookies-next/client";
 import Image from "next/image";
-import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
 
 export function Header() {
-  const Session = authClient.useSession();
+  const router = useRouter();
+
+  async function handleSignOut() {
+    await deleteCookie("token");
+
+    toast.success("Logout realizado com sucesso!");
+
+    router.push("/auth/sign-in");
+  }
 
   return (
     <header className="bg-slate-950 text-slate-100 shadow flex justify-between items-center h-35">
@@ -27,9 +38,10 @@ export function Header() {
               <HugeiconsIcon icon={UserIcon} />
             </AvatarFallback>
           </Avatar>
-          <span className="text-white">
-            Bem-vindo, {Session.data?.user.name}
-          </span>
+          <span className="text-white">Bem-vindo, João</span>
+          <Button variant="ghost" size="icon" onClick={handleSignOut}>
+            <HugeiconsIcon className="size-5" icon={Logout02Icon} />
+          </Button>
         </div>
       </div>
     </header>

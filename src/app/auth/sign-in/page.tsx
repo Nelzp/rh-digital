@@ -16,19 +16,22 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { authClient } from "@/lib/auth-client";
+import { useSignIn } from "@/hooks/use-sign-in";
 import {
   type SignInSchema,
   signInSchema,
 } from "@/types/schemas/sign-in-schema";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import Link from "next/link";
+import { useCookiesNext } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export default function SignIn() {
+  const { isPending, mutateAsync } = useSignIn();
+  const { setCookie } = useCookiesNext();
   const router = useRouter();
+
   const form = useForm<SignInSchema>({
     resolver: standardSchemaResolver(signInSchema),
     defaultValues: {
@@ -38,19 +41,12 @@ export default function SignIn() {
   });
 
   async function handleSignIn(data: SignInSchema) {
-    await authClient.signIn.email(data, {
-      onSuccess() {
-        toast.success("Login bem-sucedido!");
-        form.reset();
-        router.push("/");
-      },
-      onError({ error }) {
-        toast.error(
-          error.message || "Ocorreu um erro ao fazer login. Tente novamente.",
-        );
-        console.error("Error signing in:", error);
-      },
-    });
+    const token = await mutateAsync(data);
+    setCookie("token", token);
+
+    toast.success("Login realizado com sucesso!");
+
+    router.push("/");
   }
 
   return (
@@ -109,18 +105,9 @@ export default function SignIn() {
       </CardContent>
       <CardFooter>
         <Field>
-          <Button type="submit" form="sign-in">
-            Entrar
+          <Button disabled={isPending} type="submit" form="sign-in">
+            {isPending ? "Entrando..." : "Entrar"}
           </Button>
-          <span className="flex items-center gap-1 text-sm justify-center mt-3">
-            Não possui uma conta?
-            <Link
-              href="/auth/sign-up"
-              className="text-blue-500 hover:underline"
-            >
-              Cadastre-se
-            </Link>
-          </span>
         </Field>
       </CardFooter>
     </Card>
